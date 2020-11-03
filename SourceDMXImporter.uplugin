@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1",
+	"FriendlyName": "SourceDMXImporter",
+	"Description": "",
+	"Category": "Other",
+	"CreatedBy": "aoisensi",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "SourceDMXImporter",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}

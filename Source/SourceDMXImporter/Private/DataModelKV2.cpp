@@ -20,6 +20,10 @@ FDataModelKV2::FDataModelKV2(const FString& InSource, const int32 HeaderSize)
 			FailedParse = true;
 			return;
 		}
+		if (!RootId.IsSet())
+		{
+			RootId = Element.Id;
+		}
 		if (!Skip()) break; //success
 	}
 }
@@ -43,7 +47,6 @@ bool FDataModelKV2::ReadElement(FElement& Element, const FString& Type)
 		FString Key;
 		if (!ReadString(Key)) return false;
 		if (!Skip()) return false;
-		UE_LOG(LogTemp, Error, TEXT("AAAAAAA: %s"), *Key);
 
 		FLiteral Literal;
 		if (!ReadString(Literal.Type)) return false;

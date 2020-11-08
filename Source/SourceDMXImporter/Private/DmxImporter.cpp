@@ -4,6 +4,7 @@
 #include "DmxImporter.h"
 #include "Misc/FileHelper.h"
 #include "DataModelKV2.h"
+#include "Dmx.h"
 
 bool FDmxImporter::OpenFile(const FString& Filename)
 {
@@ -15,19 +16,28 @@ bool FDmxImporter::OpenFile(const FString& Filename)
 	FDataModel Data;
 	if (EncodingType == TEXT("keyvalues2") && EncodingVer == 1)
 	{
-		TUniquePtr<FArchive> Reader(IFileManager::Get().CreateFileReader(*Filename, 0));
-		if (!Reader)
+		if (FormatType == TEXT("model") && FormatVer == 1)
 		{
-			return false;
+			TUniquePtr<FArchive> Reader(IFileManager::Get().CreateFileReader(*Filename, 0));
+			if (!Reader)
+			{
+				return false;
+			}
+			FString Source;
+			if (!FFileHelper::LoadFileToString(Source, *Reader))
+			{
+				return false;
+			}
+			Data = FDataModelKV2(Source, HeaderSize);
 		}
-		FString Source;
-		if (!FFileHelper::LoadFileToString(Source, *Reader))
-		{
-			return false;
-		}
-		Data = FDataModelKV2(Source, HeaderSize);
 	}
-	// Break Point Here And Watch Data Variable!!
+	if (Data.FailedParse || Data.Elements.Num() == 0)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed parse dmx file. Filename: %s"), *Filename);
+		return false;
+	}
+	auto Dmx = FDmx(Data);
+	// Break Point Here And Watch Dmx Variable!!
 	return false;
 }
 
